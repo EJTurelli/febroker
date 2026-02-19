@@ -6,8 +6,8 @@ function preciosPizarra() {
     leyenda: '',
     productos: [],
 
-    // PLACEHOLDER - se reemplaza automáticamente en el deploy
-    API_URL: '{{API_URL}}',
+    // DETECTAR: si existe CONFIG (local) usarlo, sino placeholder (producción)
+    API_URL: (typeof CONFIG !== 'undefined') ? CONFIG.API_URL : '{{API_URL}}',
 
     iconosUrls: {
       'TRIGO': 'img/products/trigo.png',
