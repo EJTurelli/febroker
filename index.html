@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Precios de Pizarra - CAC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="grain-pattern min-h-screen">
+
+  <div x-data="preciosPizarra()" class="w-full max-w-md mx-auto px-4 py-6">
+
+    <!-- Header -->
+    <div class="text-center mb-6 flex flex-row">
+      <div class="basis-1/4">
+        <img src="img/fe_brker.gif" alt="logo" sizes="">
+      </div>
+      <div class="basis-3/4 flex flex-col justify-center"">
+        <h1 class=" text-[1.5rem] leading-tight font-bold text-white mb-2 tracking-wider">PRECIOS CÁMARA</h1>
+        <div class="text-yellow-400 text-base font-medium" x-text="diaPizarra"></div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div x-show="cargando" class="text-center py-12" x-cloak>
+      <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-yellow-500"></div>
+      <p class="text-gray-400 mt-3 text-base">Cargando precios...</p>
+    </div>
+
+    <!-- Error -->
+    <div x-show="error" class="bg-red-900/50 border border-red-500 rounded-lg p-4 mb-4 text-red-200 text-base" x-cloak>
+      <p x-text="error"></p>
+      <button @click="init()" class="mt-2 text-sm underline hover:text-red-100">Reintentar</button>
+    </div>
+
+    <!-- Lista de Productos -->
+    <div x-show="!cargando && !error" class="space-y-4">
+      <template x-for="producto in productos" :key="producto.nombre">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden relative"
+          :class="{ 'estimative-pulse': producto.esEstimativo }">
+
+          <!-- Badge de Estimativo -->
+          <div x-show="producto.esEstimativo"
+            class="absolute top-2 right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full z-10">
+            Estimado
+          </div>
+
+          <div class="flex items-center p-4 border-l-4" :class="getBorderLeftColor(producto.nombre)">
+
+            <!-- Icono del Grano -->
+            <div class="flex-shrink-0 mr-4">
+              <div class="w-16 h-16 rounded-lg flex items-center justify-center bg-white shadow-md overflow-hidden">
+                <img :src="getIconoUrl(producto.nombre)" :alt="producto.nombre" class="w-12 h-12 object-contain"
+                  @error="$event.target.style.display='none'">
+              </div>
+            </div>
+
+            <!-- Información -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between mb-1">
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider" x-text="producto.nombre"></span>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div class="text-[1.75rem] font-bold text-gray-800 tracking-tight truncate">
+                  <span x-text="formatearPrecio(producto.precio)"></span>
+                  <span x-show="producto.sinCotizacion" class="text-sm font-normal text-gray-500 ml-1">S/C</span>
+                </div>
+                <!-- Flecha de Tendencia -->
+                <div class="flex items-center ml-2 flex-shrink-0">
+                  <template x-if="producto.tendencia === 'sube'">
+                    <svg class="w-7 h-7 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </template>
+                  <template x-if="producto.tendencia === 'baja'">
+                    <svg class="w-7 h-7 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </template>
+                  <template x-if="producto.tendencia === 'igual'">
+                    <span class="text-2xl text-gray-400 font-light">=</span>
+                  </template>
+                </div>
+              </div>
+
+              <!-- Diferencia -->
+              <div class="mt-1 text-base font-medium" :class="getDiffColor(producto.tendencia)">
+                <span class="text-gray-500">DIF. $/tn: </span>
+                <span x-text="formatearDiferencia(producto.diferenciaPesos, producto.tendencia)"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Leyenda -->
+    <div x-show="!cargando && !error" class="mt-6 text-center">
+      <p class="text-gray-400 text-xs leading-relaxed" x-text="leyenda"></p>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
