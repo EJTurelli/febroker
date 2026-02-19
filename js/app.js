@@ -6,8 +6,8 @@ function preciosPizarra() {
     leyenda: '',
     productos: [],
 
-    // REEMPLAZAR CON TU URL DE GOOGLE APPS SCRIPT
-    API_URL: 'https://script.google.com/macros/s/AKfycbzGiP5u0mRQ4RsoUaT6sSmkhDroGjP_DmEj5psVk-E/dev',
+    // PLACEHOLDER - se reemplaza automáticamente en el deploy
+    API_URL: '{{API_URL}}',
 
     iconosUrls: {
       'TRIGO': 'https://www.cac.bcr.com.ar/themes/custom/base/images/products/trigo.png',
