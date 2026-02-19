@@ -10,11 +10,11 @@ function preciosPizarra() {
     API_URL: '{{API_URL}}',
 
     iconosUrls: {
-      'TRIGO': 'https://www.cac.bcr.com.ar/themes/custom/base/images/products/trigo.png',
-      'MAÍZ': 'https://www.cac.bcr.com.ar/themes/custom/base/images/products/maiz.png',
-      'GIRASOL': 'https://www.cac.bcr.com.ar/themes/custom/base/images/products/girasol.png',
-      'SOJA': 'https://www.cac.bcr.com.ar/themes/custom/base/images/products/soja.png',
-      'SORGO': 'https://www.cac.bcr.com.ar/themes/custom/base/images/products/sorgo.png'
+      'TRIGO': 'img/products/trigo.png',
+      'MAÍZ': 'img/products/maiz.png',
+      'GIRASOL': 'img/products/girasol.png',
+      'SOJA': 'img/products/soja.png',
+      'SORGO': 'img/products/sorgo.png'
     },
 
     async init() {
